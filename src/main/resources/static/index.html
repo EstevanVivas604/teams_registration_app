@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Equipos - Torneo Rocket League</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Registro de Equipos</h1>
+
+        <!-- Sección para el nombre del equipo -->
+        <div class="team-section" id="team-section">
+            <label for="team-name">Nombre del Equipo:</label>
+            <input type="text" id="team-name" name="teamName" placeholder="Nombre del Equipo" required>
+            <button type="button" class="btn-nav" id="start-btn">Comenzar Registro</button>
+        </div>
+
+        <div id="player-form-div" style="display: none;">
+            <!-- Formulario de jugadores -->
+            <form id="player-form">
+                <h2>Jugador <span id="player-number">1</span> de 5</h2>
+                <label for="names">Nombres:</label>
+                <input type="text" name="nombre" id="names" required>
+                <label for="surnames">Apellidos:</label>
+                <input type="text" name="apellido" id="surnames" required>
+                <label for="birthdate">Fecha de Nacimiento:</label>
+                <input type="date" name="fechaNacimiento" id="birthdate" required>
+                <label for="email">Correo Electrónico:</label>
+                <input type="email" name="email" id="email" required>
+                <label for="alias">Alias:</label>
+                <input type="text" name="alias" id="alias" required>
+                <button type="button" class="btn-nav" id="add-player-btn">Agregar Jugador</button>
+            </form>
+
+            <!-- Barra de progreso -->
+            <div class="progress">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </div>
+
+        <div id="captain-selection" style="display: none;">
+            <h2>Seleccionar Capitán</h2>
+            <div class="player-list" id="player-list"></div>
+            <button type="button" class="btn-nav" id="finalize-btn">Finalizar Registro</button>
+        </div>              
+        
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
