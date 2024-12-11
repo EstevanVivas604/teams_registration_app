@@ -268,7 +268,7 @@ async function validateTeamName(teamName) {
 
 async function registerTeam() {
     const teamName = document.getElementById('team-name').value.trim();
-    const selectedCaptain = document.querySelector('input[name="captain"]:checked').value;
+    const selectedCaptain = document.querySelector('input[name="captain"]:checked');
 
     if (!selectedCaptain) {
         showErrorNotification('Seleccione un jugador como capitán del equipo.');
@@ -284,7 +284,7 @@ async function registerTeam() {
             body: JSON.stringify({
                 name: teamName,
                 players: players,
-                captainIdx: selectedCaptain
+                captainIdx: selectedCaptain.value
             })
         });
 
