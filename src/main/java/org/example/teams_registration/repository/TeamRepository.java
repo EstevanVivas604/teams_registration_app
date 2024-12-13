@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class TeamRepository {
-    private Connection connection = DatabaseConnection.getConnection();
 
     private PlayerRepository playerRepository = new PlayerRepository();
 
@@ -24,7 +23,8 @@ public class TeamRepository {
                 FROM teams
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(query);
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
@@ -37,7 +37,8 @@ public class TeamRepository {
 
     public Optional<Team> findById(long id) throws SQLException {
         String query = "SELECT team_id, team_name, captain_id FROM teams WHERE team_id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
 
             return executeQuery(preparedStatement);
@@ -46,7 +47,8 @@ public class TeamRepository {
 
     public Optional<Team> findByName(String teamName) throws SQLException {
         String query = "SELECT team_id, team_name, captain_id FROM teams WHERE team_name = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, teamName.toLowerCase().trim());
 
             return executeQuery(preparedStatement);
@@ -86,7 +88,8 @@ public class TeamRepository {
 
     private long insertTeam(String teamName) throws SQLException {
         String query = "INSERT INTO teams (team_name) VALUES (?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, teamName.trim());
             preparedStatement.executeUpdate();
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
@@ -107,7 +110,8 @@ public class TeamRepository {
 
     private void assignCaptainToTeam(long teamId, long captainId) throws SQLException {
         String query = "UPDATE teams SET captain_id = ? WHERE team_id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, captainId);
             preparedStatement.setLong(2, teamId);
 
