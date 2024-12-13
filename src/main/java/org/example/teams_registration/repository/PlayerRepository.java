@@ -15,8 +15,6 @@ import java.util.Optional;
 
 public class PlayerRepository {
 
-    private Connection connection = DatabaseConnection.getConnection();
-
     public Optional<Player> findById(long playerId) throws SQLException {
         String query = """
                 SELECT names, surnames, email, birthdate, alias
@@ -24,7 +22,8 @@ public class PlayerRepository {
                 WHERE player_id = ?
                 """;
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, playerId);
             return executeQuery(preparedStatement);
         }
@@ -37,7 +36,8 @@ public class PlayerRepository {
                 WHERE alias = ?
                 """;
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, alias.toLowerCase().trim());
             return executeQuery(preparedStatement);
         }
@@ -50,7 +50,8 @@ public class PlayerRepository {
                 WHERE email = ?
                 """;
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, email.trim().toLowerCase());
             return executeQuery(preparedStatement);
         }
@@ -75,7 +76,8 @@ public class PlayerRepository {
                 WHERE team_id = ?
                 """;
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, teamId);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -106,7 +108,8 @@ public class PlayerRepository {
                 VALUES (?, ?, ?, ?, ?, ?)
                 """;
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, player.getNames().trim());
             preparedStatement.setString(2, player.getSurnames().trim());
             preparedStatement.setString(3, player.getEmail().trim().toLowerCase());
@@ -139,11 +142,12 @@ public class PlayerRepository {
                 WHERE alias = ?
                 """;
 
-        try (PreparedStatement statement = connection.prepareStatement(query)){
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, alias.trim().toLowerCase());
 
-            try (ResultSet resultSet = statement.executeQuery()){
-                if (resultSet.next()){
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
                     return Optional.of(resultSet.getLong("player_id"));
                 }
             }
